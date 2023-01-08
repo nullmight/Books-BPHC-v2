@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { mutate } from 'swr'
+import { Input, Grid, Button } from "@nextui-org/react";
 
 const Form = ({ formId, listingForm, forNewListing = true }) => {
   const router = useRouter()
@@ -70,7 +71,8 @@ const Form = ({ formId, listingForm, forNewListing = true }) => {
     const target = e.target
     const value = target.value
     const name = target.name
-
+    console.log(value)
+    console.log(name);
     setForm({
       ...form,
       [name]: value,
@@ -96,6 +98,75 @@ const Form = ({ formId, listingForm, forNewListing = true }) => {
       setErrors({ errs })
     }
   }
+
+  return (
+    <Grid.Container
+      gap={4}
+      justify="center"
+      css={{
+        py: "100px",
+      }}
+    >
+      <form id={formId} onSubmit={handleSubmit}>
+        <Grid>
+          <Input
+            bordered
+            name="bookname"
+            labelPlaceholder="Book Name"
+            color="primary"
+            type="text"
+            width="400px"
+            value={form.bookname}
+            onChange={handleChange}
+            required
+          />
+        </Grid>
+        <Grid>
+          <Input
+            bordered
+            name="author"
+            labelPlaceholder="Author"
+            color="primary"
+            type="text"
+            fullWidth
+            value={form.author}
+            onChange={handleChange}
+            required
+          />
+        </Grid>
+        <Grid>
+          <Input
+            bordered
+            name="course"
+            labelPlaceholder="Course"
+            color="primary"
+            type="text"
+            fullWidth
+            value={form.course}
+            onChange={handleChange}
+            required
+          />
+        </Grid>
+        <Grid>
+          <Input
+            bordered
+            name="price"
+            Placeholder="Price"
+            initialValue=''
+            color="primary"
+            type="number"
+            fullWidth
+            value={form.price}
+            onChange={handleChange}
+            required
+          />
+        </Grid>
+        <Grid>
+          <Button type="submit" >Submit</Button>
+        </Grid>
+      </form>
+    </Grid.Container>
+  );
 
   return (
     <>
