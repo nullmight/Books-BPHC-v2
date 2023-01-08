@@ -12,13 +12,6 @@ function MyApp({ Component, pageProps }) {
         <title>Books@BPHC</title>
       </Head>
 
-      {/* <div className="top-bar">
-        <div className="nav">
-          <Link href="/">Home</Link>
-          <Link href="/new">Add Listing</Link>
-        </div>
-      </div> */}
-
       <Nav></Nav>
 
       <NextUIProvider>

@@ -1,38 +1,63 @@
 import Link from 'next/link'
 import dbConnect from '../lib/dbConnect'
 import Listing from '../models/Listing'
+import { Grid, Card, Text, Button, Row, Col } from "@nextui-org/react";
+import { Router, useRouter } from 'next/router';
 
-const Index = ({ listings }) => (
-  <>
-    {/* Create a card for each listing */}
-    {listings.map((listing) => (
-      <div key={listing._id}>
-        <div className="card">
-          <img src={listing.image_url} />
-          <h5 className="listing-name">{listing.bookname}</h5>
-          <div className="main-content">
-            <p className="author">{listing.author}</p>
-            <p className="course">Course: {listing.course}</p>
-            <p className="price">Price: ₹ {listing.price}</p>
 
-            <div className="btn-container">
-              <Link
-                href="/[id]/edit"
-                as={`/${listing._id}/edit`}
-                legacyBehavior
+export default function Index({ listings }) {
+  const router = useRouter();
+
+  const MockItem = ({ image_url, bookname, price, id }) => {
+    return (
+      <Card isPressable isHoverable onPress={(e) => router.push(`/${id}`)}>
+        <Card.Body css={{ p: 0 }}>
+          <Card.Image
+            src="/book.png"
+            objectFit="cover"
+            width="75%"
+            height="75%"
+            alt={bookname}
+          />
+        </Card.Body>
+        <Card.Divider />
+        <Card.Footer css={{ justifyItems: "flex-start" }}>
+          <Row wrap="wrap" justify="space-between" align="center">
+              <Text b>{bookname}</Text>
+            <Text
+              css={{
+                color: "$accents7",
+                fontWeight: "$semibold",
+                fontSize: "$sm",
+              }}
+            >
+              {"₹ " + price}
+            </Text>
+          </Row>
+          {/* <Row justify="flex-end">
+              <Button
+                size="sm"
+                light
+                onPress={(e) => router.push(`/${id}/edit`)}
               >
-                <button className="btn edit">Edit</button>
-              </Link>
-              <Link href="/[id]" as={`/${listing._id}`} legacyBehavior>
-                <button className="btn view">View</button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    ))}
-  </>
-);
+                Edit
+              </Button>
+              <Button size="sm" onPress={(e) => router.push(`/${id}`)}> View </Button>
+          </Row> */}
+        </Card.Footer>
+      </Card>
+    );
+  };
+  return (
+    <Grid.Container gap={2} justify="center">
+      {listings.map((listing) => (
+        <Grid xs={6} md={3}>
+          <MockItem image_url={listing.image_url} bookname={listing.bookname} price={listing.price} id={listing._id}/>
+        </Grid>
+      ))}
+    </Grid.Container>
+  );
+}
 
 /* Retrieves listing(s) data from mongodb database */
 export async function getServerSideProps() {
@@ -48,5 +73,3 @@ export async function getServerSideProps() {
   console.log(listings)
   return { props: { listings: listings } }
 }
-
-export default Index
